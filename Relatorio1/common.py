@@ -82,7 +82,7 @@ def result_sistema(matrizA, matrizB, matrizX):
     # retorna a matriz solução
     return matriz_solucao
 
-def print_matriz(matriz, nome):
+def print_matriz(matriz, nome, tipo):
     linha, coluna = sp.shape(matriz)
     tamNome = len(nome)
     result_print = ""
@@ -93,7 +93,10 @@ def print_matriz(matriz, nome):
         else:
             result_print += f"{'':<{tamNome + 3}}|  "
         for j in range(coluna):
-            result_print += f"{matriz[i,j]:.3f}{'':<2}"  
+            if tipo == 'n':
+                result_print += f"{matriz[i,j]:.3f}{'':<2}"
+            elif tipo == 's':
+                result_print += f"{matriz[i,j]}{'':<4}"
         result_print += f"|\n"
     return result_print
     
