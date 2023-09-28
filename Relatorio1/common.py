@@ -81,3 +81,19 @@ def result_sistema(matrizA, matrizB, matrizX):
     
     # retorna a matriz solução
     return matriz_solucao
+
+def print_matriz(matriz, nome):
+    linha, coluna = sp.shape(matriz)
+    tamNome = len(nome)
+    result_print = ""
+    
+    for i in range(linha):
+        if i == int(linha/2):
+            result_print += f"{nome} = |  "
+        else:
+            result_print += f"{'':<{tamNome + 3}}|  "
+        for j in range(coluna):
+            result_print += f"{matriz[i,j]:.3f}{'':<2}"  
+        result_print += f"|\n"
+    return result_print
+    

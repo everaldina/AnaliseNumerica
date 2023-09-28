@@ -32,8 +32,8 @@ def eliminacao_de_gauss(matrizA, matrizB, matrizX):
         return None
     
 def main():
-    input = "G:\Meu Drive\\facul\\analise numerica\Relatorio 1\input_gauss.txt"
-    output = "G:\Meu Drive\\facul\\analise numerica\Relatorio 1\output_gauss.txt"
+    input = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\input_gauss.txt"
+    output = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\output_gauss.txt"
     
     
     entrada = common.abrir_entrada(input)
@@ -41,30 +41,51 @@ def main():
         return
     else:
         entrada = entrada.split('\n')
-        if len(entrada) == 4:
-            x0 = common.expr_val(entrada[0])
-            x1 = common.expr_val(entrada[1])
-            precisao = common.expr_val(entrada[2])
-            expressao = common.expr_val(entrada[3])
-        else:
-            return
+        #dimensao da matriz
+        n = common.expr_val(entrada[0])
+        #criando matrizB
+        matrizB = sp.Matrix(entrada[1].split(' '))
+        #criando matrizX
+        matrizX = sp.Matrix([])
+        for i in range(n):
+            nome = 'x' + str(i)
+            matrizX = matrizX.row_insert(i, sp.Matrix([nome]))
+        #criando matrizA
+        matrizA = sp.Matrix([])
+        for i in range(2, len(entrada)):
+            matrizA = matrizA.row_insert(i, sp.Matrix([entrada[i].split(' ')]))
+        
     
-    if expressao is None or x0 is None or x1 is None or precisao is None:
+    if not common.check_sistema_solucao(matrizA, matrizB, matrizX):
         return
     else:
         arquivo_saida = open(output, 'w')
-        common.escrever_arquivo(arquivo_saida, f"k{'':<10}xk{'':<9}fxk{'':<9}xk+1{'':<9}fxk+1")
-        common.escrever_arquivo(arquivo_saida, f"\n")
-        raiz = secante(expressao, x0, x1, precisao, arquivo_saida)
-        common.escrever_arquivo(arquivo_saida, "\nx(k+1) = ((fxk*(xk-1)) - ((fxk-1) *xk))/(fxk - (fxk-1))\n")
-        if raiz is not None:
-            result = expressao.subs(x, raiz)
-            if result == 0:
-                common.escrever_arquivo(arquivo_saida, f'\nA raiz da funcao eh: {raiz}')
-            else:
-                common.escrever_arquivo(arquivo_saida, f'\nA raiz (aproximada) da funcao eh: {raiz}')
-        else:
-            common.escrever_arquivo(arquivo_saida, '\nNão foi possível encontrar uma raiz')
+        # escrevendo matrizes de entrada
+        common.escrever_arquivo(arquivo_saida, "Matriz A:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizA, 'A'))
+        common.escrever_arquivo(arquivo_saida, "\n")
+        common.escrever_arquivo(arquivo_saida, "Matriz B:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizB, 'B'))
+        common.escrever_arquivo(arquivo_saida, "\n")
+        common.escrever_arquivo(arquivo_saida, "Matriz X:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizX, 'X'))
+        
+        matrizA_, matrizB_ = matriz_triangular_sup(matrizA, matrizB)
+        
+        # escrevendo matrizes resultantes
+        common.escrever_arquivo(arquivo_saida, "Matriz A modificada pela eliminação de Gauss:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizA_, 'A'))
+        common.escrever_arquivo(arquivo_saida, "\n")
+        common.escrever_arquivo(arquivo_saida, "Matriz B modificada pela eliminação de Gauss:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizB_, 'B'))
+        
+        result = eliminacao_de_gauss(matrizA, matrizB, matrizX)
+        # escrevendo resultado
+        common.escrever_arquivo(arquivo_saida, "\nResultado:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(result, 'X'))
+        
+        
+        
         arquivo_saida.close()
         return
         
