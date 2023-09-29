@@ -73,10 +73,15 @@ def check_sistema_solucao(matrizA, matrizB, matrizX,):
 
 def result_sistema(matrizA, matrizB, matrizX):
     n = sp.shape(matrizA)[0]
-    variaveis = sp.simbols('x0:%d' % n)
+    variaveis = sp.symbols('x0:%d' % n)
     
     # calcula solução do sistema
-    matriz_solucao = sp.solve(matrizA*matrizX - matrizB, variaveis)
+    solucao = sp.solve(matrizA*matrizX - matrizB, variaveis)
+
+    # cria matriz solucao
+    matriz_solucao = sp.Matrix([])
+    for i in range(n):
+        matriz_solucao = matriz_solucao.row_insert(i, sp.Matrix([solucao[variaveis[i]]]))
     
     
     # retorna a matriz solução

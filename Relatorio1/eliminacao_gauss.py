@@ -50,7 +50,6 @@ def main():
         for i in range(n):
             nome = 'x' + str(i)
             matrizX = matrizX.row_insert(i, sp.Matrix([sp.symbols(nome)]))
-        print(matrizX)
         #criando matrizA
         matrizA = sp.Matrix([])
         for i in range(2, len(entrada)):
