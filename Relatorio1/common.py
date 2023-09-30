@@ -106,12 +106,12 @@ def print_matriz(matriz, nome, tipo = 'n'):
     return result_print
 
 # Retorna eabsoluto e erelativo
-# eabsoluto = x(k+1) - x(k) 
+# eabsoluto = || x(k+1) - x(k) ||oo
 # erelativo = || x(k+1) - x(k) ||oo / || x(k+1) ||oo
 def return_variacao(vet_1, vet_0):
     k1_norm_inf = vet_1.norm(sp.oo)
-    sub_k1_k0 = vet_1 - vet_0
-    return sub_k1_k0, sub_k1_k0.norm(sp.oo) / k1_norm_inf
+    sk1_k0_norm_inf = (vet_1 - vet_0).norm(sp.oo)
+    return sk1_k0_norm_inf, (sk1_k0_norm_inf / k1_norm_inf).evalf()
     
      
 
