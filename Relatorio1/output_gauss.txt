@@ -1,0 +1,28 @@
+Matriz A:
+    |  3.000  -0.100  -0.200  |
+A = |  0.100  7.000  -0.300  |
+    |  0.300  -0.200  10.000  |
+
+Matriz B:
+    |  7.850  |
+B = |  -19.300  |
+    |  71.400  |
+
+Matriz X:
+    |  x0    |
+X = |  x1    |
+    |  x2    |
+Matriz A modificada pela elimina��o de Gauss:
+    |  3.000  -0.100  -0.200  |
+A = |  0.000  7.003  -0.293  |
+    |  0.000  0.000  10.012  |
+
+Matriz B modificada pela elimina��o de Gauss:
+    |  7.850  |
+B = |  -19.562  |
+    |  70.084  |
+
+Resultado:
+    |  3.000  |
+X = |  -2.500  |
+    |  7.000  |

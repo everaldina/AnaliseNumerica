@@ -20,16 +20,12 @@ def matriz_triangular_sup(matrizA, matrizB):
 
 
 def eliminacao_de_gauss(matrizA, matrizB, matrizX):
-    # verifica se o sistema tem solução
-    if(common.check_sistema_solucao(matrizA, matrizB, matrizX)):
-        # nova_matrizA e nova_matrizB são as matrizes A e B modificadas pela eliminação de Gauss
-        nova_matrizA, nova_matrizB = matriz_triangular_sup(matrizA, matrizB)
-        
-        # calcula a solução do sistema
-        matriz_solucao = common.result_sistema(nova_matrizA, nova_matrizB, matrizX)
-        return matriz_solucao
-    else:
-        return None
+    # nova_matrizA e nova_matrizB são as matrizes A e B modificadas pela eliminação de Gauss
+    nova_matrizA, nova_matrizB = matriz_triangular_sup(matrizA, matrizB)
+    
+    # calcula a solução do sistema
+    matriz_solucao = common.result_sistema(nova_matrizA, nova_matrizB, matrizX)
+    return matriz_solucao
     
 def main():
     input = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\input_gauss.txt"
@@ -55,7 +51,7 @@ def main():
         for i in range(2, len(entrada)):
             matrizA = matrizA.row_insert(i, sp.Matrix([entrada[i].split(' ')]))
         
-    
+    # verifica se o sistema tem solução
     if not common.check_sistema_solucao(matrizA, matrizB, matrizX):
         return
     else:
@@ -73,10 +69,10 @@ def main():
         matrizA_, matrizB_ = matriz_triangular_sup(matrizA, matrizB)
         
         # escrevendo matrizes resultantes
-        common.escrever_arquivo(arquivo_saida, "Matriz A modificada pela eliminação de Gauss:\n")
+        common.escrever_arquivo(arquivo_saida, "\nMatriz A modificada pela eliminacao de Gauss:\n")
         common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizA_, 'A', 'n'))
         common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, "Matriz B modificada pela eliminação de Gauss:\n")
+        common.escrever_arquivo(arquivo_saida, "Matriz B modificada pela eliminacao de Gauss:\n")
         common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizB_, 'B', 'n'))
         
         result = eliminacao_de_gauss(matrizA, matrizB, matrizX)

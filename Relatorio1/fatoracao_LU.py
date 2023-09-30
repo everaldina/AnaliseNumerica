@@ -47,11 +47,77 @@ def matriz_LU(matrizA):
                 
     return matL, matU
 
-#mt = sp.Matrix([[3, -0.1, -0.2], [0.1, 7, -0.3], [0.3, -0.2, 10]])
-#rL, rU = matriz_LU(mt)
-#print(common.print_matriz(rL, 'L', 'n'))
-#print(common.print_matriz(rU, 'U', 'n'))
-#mt2 = sp.Matrix([[5, 2, 1], [3, 1, 4], [1, 1, 3]])
-#rL, rU = matriz_LU(mt2)
-#print(common.print_matriz(rL, 'L', 'n'))
-#print(common.print_matriz(rU, 'U', 'n'))
+def fatoracao_LU(matrizA, matrizB, matrizX):
+    # matrizL e matrizU são o resultado da decomposição LU da matriz A
+    matrizL, matrizU = matriz_LU(matrizA)
+    matriz_y = matrizX.copy()
+    
+    
+    # calcula os valores de Y
+    matriz_y = common.result_sistema(matrizL, matrizB, matriz_y)
+    
+    # calcula os valores de X
+    matriz_solucao = common.result_sistema(matrizU, matriz_y, matrizX)
+    return matrizL, matrizU, matriz_y, matriz_solucao
+
+
+def main():
+    input = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\input_LU.txt"
+    output = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\output_LU.txt"
+    
+    
+    entrada = common.abrir_entrada(input)
+    if entrada is None:
+        return
+    else:
+        entrada = entrada.split('\n')
+        #dimensao da matriz
+        n = common.expr_val(entrada[0])
+        #criando matrizB
+        matrizB = sp.Matrix(entrada[1].split(' '))
+        #criando matrizX
+        matrizX = sp.Matrix([])
+        for i in range(n):
+            nome = 'x' + str(i)
+            matrizX = matrizX.row_insert(i, sp.Matrix([sp.symbols(nome)]))
+        #criando matrizA
+        matrizA = sp.Matrix([])
+        for i in range(2, len(entrada)):
+            matrizA = matrizA.row_insert(i, sp.Matrix([entrada[i].split(' ')]))
+        
+    # verifica se o sistema tem solução e se a matriz A pode ser decomposta
+    if not common.check_sistema_solucao(matrizA, matrizB, matrizX) or not check_requisito_decomposicao(matrizA):
+        return
+    else:
+        arquivo_saida = open(output, 'w')
+        # escrevendo matrizes de entrada
+        common.escrever_arquivo(arquivo_saida, "Matriz A:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizA, 'A', 'n'))
+        common.escrever_arquivo(arquivo_saida, "\n")
+        common.escrever_arquivo(arquivo_saida, "Matriz B:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizB, 'B', 'n'))
+        common.escrever_arquivo(arquivo_saida, "\n")
+        common.escrever_arquivo(arquivo_saida, "Matriz X:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizX, 'X', 's'))
+        common.escrever_arquivo(arquivo_saida, "\n")
+        
+        matrizL, matrizU, matriz_y, result = fatoracao_LU(matrizA, matrizB, matrizX)
+        
+        # escrevendo matrizes L, U e Y
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizL, 'L', 'n'))
+        common.escrever_arquivo(arquivo_saida, "\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizU, 'U', 'n'))
+        common.escrever_arquivo(arquivo_saida, "\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(matriz_y, 'Y', 's'))
+
+        # escrevendo resultado
+        common.escrever_arquivo(arquivo_saida, "\nResultado:\n")
+        common.escrever_arquivo(arquivo_saida, common.print_matriz(result, 'X', 'n'))
+        
+        arquivo_saida.close()
+        return
+        
+        
+
+if __name__ == "__main__":
+    main()
