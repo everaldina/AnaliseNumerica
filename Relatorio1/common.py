@@ -127,3 +127,44 @@ def check_converge(matrizB):
         return True
     else:
         return False
+    
+
+# retorno matriz B para o sistema Ax = b, para x = B x + g, onde:
+# B = I − A
+# g = b
+#
+# I: matriz identidade
+# A: matriz dos coeficientes
+# b: matriz dos termos independentes
+def return_matrizB(matrizA, n):
+    
+    # cria matriz quadrada n x n com zeros
+    matrizB = sp.zeros(n)
+    
+    # para isolar variavei i, cada elemento Bi,j é igual a -Ai,j/Ai,i
+    for i in range(n):
+        for j in range(n):
+            if i != j:
+                matrizB[i,j] = -matrizA[i,j]/matrizA[i,i]
+    return matrizB
+
+
+# retorno vetor B para o sistema Ax = b, para x = B x + g, onde:
+# B = I − A
+# g = b
+#
+# I: matriz identidade
+# A: matriz dos coeficientes
+# b: matriz dos termos independentes
+def return_vetorG(matrizA, matrizB, n= None):
+    # se n for None, n = numero de linhas da matriz A
+    if n is None:
+        n = sp.shape(matrizA)[0]
+    
+    # vetorG recebe matrizB
+    vetorG = matrizB.copy()
+    
+    # cada elemento Gi,0 é dividido por coeficiente Ai,i
+    for i in range(n):
+        vetorG[i,0] /= matrizA[i,i]
+    return vetorG
