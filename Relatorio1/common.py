@@ -87,7 +87,7 @@ def result_sistema(matrizA, matrizB, matrizX):
     # retorna a matriz solução
     return matriz_solucao
 
-def print_matriz(matriz, nome, tipo):
+def print_matriz(matriz, nome, tipo = 'n'):
     linha, coluna = sp.shape(matriz)
     tamNome = len(nome)
     result_print = ""
