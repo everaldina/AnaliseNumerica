@@ -104,4 +104,26 @@ def print_matriz(matriz, nome, tipo = 'n'):
                 result_print += f"{matriz[i,j]}{'':<4}"
         result_print += f"|\n"
     return result_print
+
+# Retorna eabsoluto e erelativo
+# eabsoluto = x(k+1) - x(k) 
+# erelativo = || x(k+1) - x(k) ||oo / || x(k+1) ||oo
+def return_variacao(vet_1, vet_0):
+    k1_norm_inf = vet_1.norm(sp.oo)
+    sub_k1_k0 = vet_1 - vet_0
+    return sub_k1_k0, sub_k1_k0.norm(sp.oo) / k1_norm_inf
     
+     
+
+# Ve se uma matriz B (matriz de iteraçao) converge pra solução
+# Pelo Corolario 5.1 - (Critério Geral de convergência)
+# O processo iterativo definido por é convergente se para qualquer norma de matrizes, || B || < 1       
+def check_converge(matrizB):
+    if matrizB.norm() < 1: # verifica se norma euclidiana é menor que 1
+        return True
+    elif matrizB.norm(1) < 1: # verifica se norma de coluna é menor que 1
+        return True
+    elif matrizB.norm(sp.oo) < 1: # verifica se norma de linha é menor que 1
+        return True
+    else:
+        return False
