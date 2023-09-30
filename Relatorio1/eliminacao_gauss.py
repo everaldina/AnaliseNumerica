@@ -49,7 +49,7 @@ def main():
         #criando matrizA
         matrizA = sp.Matrix([])
         for i in range(2, len(entrada)):
-            matrizA = matrizA.row_insert(i, sp.Matrix([entrada[i].split(' ')]))
+            matrizA = matrizA.row_insert(i-2, sp.Matrix([entrada[i].split(' ')]))
         
     # verifica se o sistema tem solução
     if not common.check_sistema_solucao(matrizA, matrizB, matrizX):

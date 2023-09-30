@@ -12,12 +12,13 @@ Matriz X:
     |  x0    |
 X = |  x1    |
     |  x2    |
-Matriz A modificada pela elimina��o de Gauss:
+
+Matriz A modificada pela eliminacao de Gauss:
     |  3.000  -0.100  -0.200  |
 A = |  0.000  7.003  -0.293  |
     |  0.000  0.000  10.012  |
 
-Matriz B modificada pela elimina��o de Gauss:
+Matriz B modificada pela eliminacao de Gauss:
     |  7.850  |
 B = |  -19.562  |
     |  70.084  |

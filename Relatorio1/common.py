@@ -92,17 +92,21 @@ def print_matriz(matriz, nome, tipo = 'n'):
     tamNome = len(nome)
     result_print = ""
     
+    
     for i in range(linha):
-        if i == int(linha/2):
+        if (i == int(linha/2) and coluna !=1) or linha == 1 or (coluna == 1 and i == 0):
             result_print += f"{nome} = |  "
-        else:
+        elif coluna != 1:
             result_print += f"{'':<{tamNome + 3}}|  "
         for j in range(coluna):
             if tipo == 'n':
-                result_print += f"{matriz[i,j]:.3f}{'':<2}"
+                result_print += f"{matriz[i,j]:.4f}{'':<2}"
             elif tipo == 's':
                 result_print += f"{matriz[i,j]}{'':<4}"
-        result_print += f"|\n"
+        if coluna != 1:
+            result_print += f"|\n"
+    if coluna == 1:
+        result_print += f"|"
     return result_print
 
 # Retorna eabsoluto e erelativo
