@@ -1,5 +1,6 @@
 import sympy as sp
 import common
+import os
 
 def jacobi(arquivo_saida, matrizB, vetorG, precisao, vet_inical = None):
     # verifica se a matriz B como é convergente 
@@ -37,11 +38,16 @@ def jacobi(arquivo_saida, matrizB, vetorG, precisao, vet_inical = None):
 
 
 def main():
-    input = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\input_jac.txt"
-    output = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\output_jac.txt"
+    ##### EXERCICIO 5.1 #####
+    #input = "exercicio-5.1.txt"
+    #output = "exercicio-5.1.txt"
+    ##### EXERCICIO 5.2 #####
+    input = "exercicio-5.2.txt"
+    output = "exercicio-5.2.txt"
+
     
-    
-    entrada = common.abrir_entrada(input)
+    metodo = "jacobi"
+    entrada = common.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -65,7 +71,6 @@ def main():
         for i in range(n):
             nome = 'x' + str(i)
             matrizX = matrizX.row_insert(i, sp.Matrix([sp.symbols(nome)]))
-
         #criando matrizA
         matrizA = sp.Matrix([])
         for i in range(4, len(entrada)):
@@ -73,26 +78,22 @@ def main():
                 matrizA = matrizA.row_insert(i-4, sp.Matrix([entrada[i].split(' ')[0:]]))
             else:
                 matrizA = matrizA.row_insert(i-4, sp.Matrix([entrada[i-1].split(' ')[0:]]))
-        if x0_definido:
+        if not x0_definido:
             matrizA = matrizA.row_insert(n-1, sp.Matrix([entrada[len(entrada)-1].split(' ')[0:]]))
-        
+    #print(matrizA, b, matrizX)
     # verifica se o sistema tem solução
     if not common.check_sistema_solucao(matrizA, b, matrizX):
         return
     else:
-        arquivo_saida = open(output, 'w')
+        arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida = open(arquivo_saida, 'w')
         # escrevendo matrizes de entrada
-        common.escrever_arquivo(arquivo_saida, "Matriz A (coeficiente):\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizA, 'A', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, "Matriz b (independentes):\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(b, 'b', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n\n")
         
         
         matB = common.return_matrizB(matrizA, n)
         vetG = common.return_vetorG(matrizA, b, n)
         
+        # matriz na forma de jacobi
         common.escrever_arquivo(arquivo_saida, "Matriz B:\n")
         common.escrever_arquivo(arquivo_saida, common.print_matriz(matB, 'B', 'n'))
         common.escrever_arquivo(arquivo_saida, "\n")

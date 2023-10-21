@@ -1,5 +1,6 @@
 import sympy as sp
-import common   
+import common
+import os
 
 x = sp.symbols('x')
 
@@ -55,11 +56,24 @@ def secante(expressao, x0, x1, precisao, arquivo_saida):
             k += 1
     
 def main():
-    input = "G:\Meu Drive\\facul\\analise numerica\Relatorio 1\input_sec.txt"
-    output = "G:\Meu Drive\\facul\\analise numerica\Relatorio 1\outputsec.txt"
+    ##### EXERCICIO 3.3 #####
+    ### Para g(0.1)
+    #input = "exercicio_3.3-0.1.txt"
+    #output = "exercicio_3.3-0.1.txt"
+    ### Para g(0.9)
+    #input = "exercicio_3.3-0.9.txt"
+    #output = "exercicio_3.3-0.9.txt"
+    ##### EXERCICIO 3.6 #####
+    #input = "exercicio_3.6.txt"
+    #output = "exercicio_3.6.txt"
+    ##### EXERCICIO 3.8 #####
+    #input = "exercicio_3.8-A.txt"
+    #output = "exercicio_3.8-A.txt"
+    #input = "exercicio_3.8-B.txt"
+    #output = "exercicio_3.8-B.txt"
     
-    
-    entrada = common.abrir_entrada(input)
+    metodo = "secante"
+    entrada = common.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -75,7 +89,8 @@ def main():
     if expressao is None or x0 is None or x1 is None or precisao is None:
         return
     else:
-        arquivo_saida = open(output, 'w')
+        arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida = open(arquivo_saida, 'w')
         common.escrever_arquivo(arquivo_saida, f"k{'':<10}xk{'':<9}fxk{'':<9}xk+1{'':<9}fxk+1")
         common.escrever_arquivo(arquivo_saida, f"\n")
         raiz = secante(expressao, x0, x1, precisao, arquivo_saida)

@@ -1,5 +1,6 @@
 import sympy as sp
 import common
+import os
 
 # verifica Teorema 4.1 - Teorema LU
 def check_requisito_decomposicao(matrizA):
@@ -62,11 +63,18 @@ def fatoracao_LU(matrizA, matrizB, matrizX):
 
 
 def main():
-    input = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\input_LU.txt"
-    output = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\output_LU.txt"
+    ##### EXERCICIO 4.1 #####
+    #input = "exercicio_4.1.txt"
+    #output = "exercicio_4.1.txt"
+    ##### EXERCICIO 4.3 #####
+    #input = "exercicio_4.3.txt"
+    #output = "exercicio_4.3.txt"
+    ##### EXERCICIO 4.6 #####
+    input = "exercicio_4.6.txt"
+    output = "exercicio_4.6.txt"
     
-    
-    entrada = common.abrir_entrada(input)
+    metodo = "fatoracao_LU"
+    entrada = common.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -89,17 +97,8 @@ def main():
     if not common.check_sistema_solucao(matrizA, matrizB, matrizX) or not check_requisito_decomposicao(matrizA):
         return
     else:
-        arquivo_saida = open(output, 'w')
-        # escrevendo matrizes de entrada
-        common.escrever_arquivo(arquivo_saida, "Matriz A:\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizA, 'A', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, "Matriz B:\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizB, 'B', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, "Matriz X:\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizX, 'X', 's'))
-        common.escrever_arquivo(arquivo_saida, "\n")
+        arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida = open(arquivo_saida, 'w')
         
         matrizL, matrizU, matriz_y, result = fatoracao_LU(matrizA, matrizB, matrizX)
         

@@ -1,9 +1,8 @@
 import sympy as sp
 import common
+import os
 
 def gauss_seidel(arquivo_saida, matrizB, vetorG, precisao, vet_inical = None):
-    # verifica se a matriz B é convergente 
-    #if common.check_converge(matrizB):
     n = sp.shape(matrizB)[0]
     
     # se vet_inical for None, vet_inical = vetor nulo
@@ -32,15 +31,17 @@ def gauss_seidel(arquivo_saida, matrizB, vetorG, precisao, vet_inical = None):
         common.escrever_arquivo(arquivo_saida, common.print_matriz(vet_0, f"x{k}", 'n'))
         common.escrever_arquivo(arquivo_saida, f"\t eabsoluto: {eabs:.5f} | erelativo: {erel:.5f}\n")
     return vet_0
-    #else:
-    #    return None
     
 def main():
-    input = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\inputs\gauss-seidel\input_gauss_seidel.txt"
-    output = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\outputs\gauss-seidel\output_gauss-seidel.txt"
+    ##### EXERCICIO 5.1 #####
+    #input = "exercicio-5.1.txt"
+    #output = "exercicio-5.1.txt"
+    ##### EXERCICIO 5.2 #####
+    #input = "exercicio-5.2.txt"
+    #output = "exercicio-5.2.txt"
     
-    
-    entrada = common.abrir_entrada(input)
+    metodo = "gauss-seidel"
+    entrada = common.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -78,14 +79,8 @@ def main():
     if not common.check_sistema_solucao(matrizA, b, matrizX):
         return
     else:
-        arquivo_saida = open(output, 'w')
-        # escrevendo matrizes de entrada
-        common.escrever_arquivo(arquivo_saida, "Matriz A (coeficiente):\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizA, 'A', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, "Matriz b (independentes):\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(b, 'b', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n\n")
+        arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida = open(arquivo_saida, 'w')
         
         
         matB = common.return_matrizB(matrizA, n)

@@ -1,5 +1,6 @@
 import sympy as sp
 import common
+import os
 
 def matriz_triangular_sup(matrizA, matrizB):
     n = sp.shape(matrizA)[0]
@@ -28,11 +29,18 @@ def eliminacao_de_gauss(matrizA, matrizB, matrizX):
     return matriz_solucao
     
 def main():
-    input = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\input_gauss.txt"
-    output = "G:\Meu Drive\\facul\\analise numerica\AnaliseNumerica\Relatorio1\output_gauss.txt"
+    ##### EXERCICIO 4.1 #####
+    #input = "exercicio_4.1.txt"
+    #output = "exercicio_4.1.txt"
+    ##### EXERCICIO 4.3 #####
+    #input = "exercicio_4.3.txt"
+    #output = "exercicio_4.3.txt"
+    ##### EXERCICIO 4.6 #####
+    input = "exercicio_4.6.txt"
+    output = "exercicio_4.6.txt"
     
-    
-    entrada = common.abrir_entrada(input)
+    metodo = "eliminacao_gauss"
+    entrada = common.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -55,16 +63,8 @@ def main():
     if not common.check_sistema_solucao(matrizA, matrizB, matrizX):
         return
     else:
-        arquivo_saida = open(output, 'w')
-        # escrevendo matrizes de entrada
-        common.escrever_arquivo(arquivo_saida, "Matriz A:\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizA, 'A', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, "Matriz B:\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizB, 'B', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, "Matriz X:\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizX, 'X', 's'))
+        arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida = open(arquivo_saida, 'w')
         
         matrizA_, matrizB_ = matriz_triangular_sup(matrizA, matrizB)
         

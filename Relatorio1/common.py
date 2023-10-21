@@ -1,5 +1,7 @@
 import sympy as sp
+import os
 
+diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 
 # retorna true se existe pelo menos uma raiz no intervalo [a, b]
 def check_solution(expressao, a, b):
@@ -39,7 +41,8 @@ def escrever_arquivo(arquivo, dados):
         return None
     
 # abre o arquivo de entrada o conteudo
-def abrir_entrada(nome_arquivo):
+def abrir_entrada(metodo, nome_arquivo):
+    nome_arquivo = os.path.join(diretorio_atual, 'inputs', metodo, nome_arquivo)
     try:
         with open(nome_arquivo, 'r') as arquivo:
             entrada = arquivo.read()

@@ -1,0 +1,10 @@
+
+Matriz A modificada pela eliminacao de Gauss:
+    |  10.0000  4.0000  4.0000  |
+A = |  0.0000  5.4000  17.4000  |
+    |  0.0000  0.0000  -1.0000  |
+
+Matriz B modificada pela eliminacao de Gauss:
+B = |  100.0000  60.0000  0.0000  |
+Resultado:
+X = |  5.5556  11.1111  0.0000  |

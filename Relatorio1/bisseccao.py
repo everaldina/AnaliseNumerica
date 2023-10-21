@@ -1,5 +1,6 @@
 import sympy as sp
 import common
+import os
     
 x = sp.symbols('x')
 
@@ -44,11 +45,24 @@ def bisseccao(expressao, a, b, precisao, arquivo_saida):
     
 
 def main():
-    input = "G:\Meu Drive\\facul\\analise numerica\Relatorio 1\input.txt"
-    output = "G:\Meu Drive\\facul\\analise numerica\Relatorio 1\outputbis.txt"
+    ##### EXERCICIO 3.3 #####
+    ### Para g(0.1)
+    #input = "exercicio_3.3-0.1.txt"
+    #output = "exercicio_3.3-0.1.txt"
+    ### Para g(0.9)
+    #input = "exercicio_3.3-0.9.txt"
+    #output = "exercicio_3.3-0.9.txt"
+    ##### EXERCICIO 3.6 #####
+    #input = "exercicio_3.6.txt"
+    #output = "exercicio_3.6.txt"
+    ##### EXERCICIO 3.8 #####
+    #input = "exercicio_3.8-A.txt"
+    #output = "exercicio_3.8-A.txt"
+    #input = "exercicio_3.8-B.txt"
+    #output = "exercicio_3.8-B.txt"
     
-    
-    entrada = common.abrir_entrada(input)
+    metodo = "bisseccao"
+    entrada = common.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -64,7 +78,8 @@ def main():
     if expressao is None or a is None or b is None or precisao is None:
         return
     else:
-        arquivo_saida = open(output, 'w')
+        arquivo_saida = os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida = open(arquivo_saida, 'w')
         common.escrever_arquivo(arquivo_saida, f'k{"":<10}a{"":<11}b{"":<11}f(a){"":<8}f(b){"":<9}e{"":<9}e/|bk|{"":<7}xk{"":<7}f(xk)\n')
         raiz = bisseccao(expressao, a, b, precisao, arquivo_saida)
         common.escrever_arquivo(arquivo_saida, '\ne = |(bk - ak)|\n')
@@ -75,7 +90,7 @@ def main():
             else:
                 common.escrever_arquivo(arquivo_saida, f'\nA raiz (aproximada) da funcao eh: {raiz}')
         else:
-            common.escrever_arquivo(arquivo_saida, '\nNão foi possível encontrar uma raiz')
+            common.escrever_arquivo(arquivo_saida, '\nNao foi possivel encontrar uma raiz')
         arquivo_saida.close()
         return
         
