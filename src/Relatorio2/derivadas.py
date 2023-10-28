@@ -21,3 +21,12 @@ def derivada_retardada(expressao, ponto, h):
     # substitui os valores na formula da derivada
     return derivada.subs(f_x1, expressao.subs(x, ponto.x - h).evalf()).subs(f_x, expressao.subs(x, ponto.x).evalf()).subs(h, h).evalf()
 
+def derivada_central(expressao, ponto, h): 
+    f_x1, fpx1, h = sp.symbols("f_x1 fpx1 h")
+    
+    # formula da derivada central
+    derivada = sp.simplify("(fpx1 - f_x1)/(2*h)")
+    
+    # substitui os valores na formula da derivada
+    return derivada.subs(f_x1, expressao.subs(x, ponto.x - h).evalf()).subs(fpx1, expressao.subs(x, ponto.x + h).evalf()).subs(h, h).evalf()
+
