@@ -30,3 +30,6 @@ def derivada_central(expressao, ponto, h):
     # substitui os valores na formula da derivada
     return derivada.subs(f_x1, expressao.subs(x, ponto.x - h).evalf()).subs(fpx1, expressao.subs(x, ponto.x + h).evalf()).subs(h, h).evalf()
 
+def derivada_segunda_ordem(expressao, ponto, h):
+    # usando a formula de derivada progressiva e retardada para calcular a segunda ordem
+    return (derivada_progressiva(expressao, ponto, h) - derivada_retardada(expressao, ponto, h))/ h  
