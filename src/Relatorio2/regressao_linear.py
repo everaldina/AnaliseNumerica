@@ -1,4 +1,6 @@
 import sympy as sp
+import common
+import os
 
 def regressao_linear(pontos): 
     # iniciando somatorios
@@ -16,18 +18,18 @@ def regressao_linear(pontos):
         soma_x2 += i.x**2
     
     # calculando a0 e a1
-    a1 = (n*soma_xy - soma_x*soma_y)/(n*soma_x2 - soma_x**2)
-    a0 = (soma_y - (a1*soma_x))/n
+    a1 = ((n*soma_xy - soma_x*soma_y)/(n*soma_x2 - soma_x**2)).evalf()
+    a0 = ((soma_y - (a1*soma_x))/n).evalf()
     
     # calculando medidas de dispersao
-    residuo = residuo(pontos, a0, a1)
-    Sr = Sr(residuo)
-    desvio_padrao = desvio_padrao(Sr, n)
-    St = St(pontos, n, soma_y)
-    cof_det = coeficiente_determinacao(St, Sr)
-    cof_cor = sp.sqrt(cof_det)
+    res = residuo(pontos, a0, a1)
+    sr = Sr(res)
+    d_padrao = (desvio_padrao(sr, n)).evalf()
+    st = St(pontos, n, soma_y)
+    cof_det = (coeficiente_determinacao(st, sr)).evalf()
+    cof_cor = (sp.sqrt(cof_det)).evalf()
     
-    return a0, a1, cof_det, cof_cor, desvio_padrao
+    return a0, a1, cof_det, cof_cor, d_padrao
     
 
 # retorna o coeficiente de determinação
@@ -63,4 +65,61 @@ def desvio_padrao(Sr, n):
     if n == 2:
         return None
     return (Sr/(n-2))**(1/2)
+
+
+def main():
+    ##### EXERCICIO 8.1 #####
+    #input = "exercicio_8.1.txt"
+    #output = "exercicio_8.1.txt"
+    ##### EXERCICIO 8.11 #####
+    #input = "exercicio_8.11.txt"
+    #output = "exercicio_8.11.txt"
     
+    metodo = "regressao_linear"
+    entrada = common.abrir_entrada(metodo, input)
+    if entrada is None:
+        return
+    else:
+        entrada = entrada.split('\n') # separando as linhas
+        
+        pontos = []
+        # criando pontos
+        for i in entrada:
+            coordenadas = i.split(' ')
+            
+            # para funcao linear
+            pontos.append(sp.Point(float(coordenadas[0]), float(coordenadas[1])))
+            
+            # para caso de funcao potencial
+            #pontos.append(sp.Point(sp.log(float(coordenadas[0])), sp.log(float(coordenadas[1]))))
+        
+
+    # caminho do arquivo de saida
+    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida = open(arquivo_saida, 'w')
+    
+    # return a0, a1, cof_det, cof_cor, desvio_padrao
+    a0, a1, coef_determinacao, coef_correlacao, desvio_padrao = regressao_linear(pontos)
+    
+    
+    
+    # escrevendo resultado para funcao linear
+    common.escrever_arquivo(arquivo_saida, f"f(x) = {a0} + {a1}x\n")
+    common.escrever_arquivo(arquivo_saida, f"a0 = {a0} | a1 = {a1}\n")
+    
+    # escrevendo resultado para funcao potencial
+    #common.escrever_arquivo(arquivo_saida, f"f(x) = {sp.exp(a0)}x^{a1}\n")
+    #common.escrever_arquivo(arquivo_saida, f"a = {sp.exp(a0)} | b = {a1}\n")
+    
+    # escrevendo medidas estatisticas
+    common.escrever_arquivo(arquivo_saida, f"r^2 = {coef_determinacao}\n")
+    common.escrever_arquivo(arquivo_saida, f"r = {coef_correlacao}\n")
+    common.escrever_arquivo(arquivo_saida, f"S(x/y) = {desvio_padrao}")
+    
+    arquivo_saida.close()
+    return
+        
+        
+
+if __name__ == "__main__":
+    main()
