@@ -175,3 +175,17 @@ def return_vetorG(matrizA, matrizB, n= None):
     for i in range(n):
         vetorG[i,0] /= matrizA[i,i]
     return vetorG
+
+# retorna um polinomio a partir de um vetor de coeficientes
+def criar_polinomio(vet_a, var):
+    n = len(vet_a)
+    polinomio = ""
+    for i in range(n):
+        if i == 0:
+            polinomio += str(vet_a[i,0]) + " + (" 
+        elif i == n-1:
+            polinomio += str(vet_a[i,0]) + "* " + str(var) +"**" + str(i) + ")"
+        else:
+            polinomio += str(vet_a[i,0]) + "* "+ str(var) + "**" + str(i) + ") + ("
+            
+    return sp.sympify(polinomio)
