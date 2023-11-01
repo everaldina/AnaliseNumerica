@@ -1,0 +1,2 @@
+Integral simples: 5.44778128490798/pi
+Integral multipla: 1.11528713894631
