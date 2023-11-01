@@ -1,0 +1,1 @@
+Integral por Simpson 3/8: 1630142.60985673
