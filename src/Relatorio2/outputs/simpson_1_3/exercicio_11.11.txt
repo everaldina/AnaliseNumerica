@@ -1,0 +1,2 @@
+Integral simples: 1.15071891669561
+Integral multipla: 1.11520898151041
