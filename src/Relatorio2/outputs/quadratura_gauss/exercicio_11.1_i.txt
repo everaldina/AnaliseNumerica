@@ -1,0 +1,1 @@
+Integral por quadratura de Gauss (3 pontos): 199000936686.278

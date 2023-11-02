@@ -1,0 +1,1 @@
+Integral por quadratura de Gauss (3 pontos): 519445.52015721143*pi
