@@ -1,0 +1,4 @@
+Derivada progressiva: 1.76340724187902
+Derivada retardada: 1.06956055775892
+Derivada central: 1.41648389981897
+Derivada de segunda ordem: 0.693846684120103
