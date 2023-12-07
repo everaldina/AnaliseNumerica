@@ -71,7 +71,7 @@ def main():
     # escreve os resultados no arquivo de saida
     common.escrever_arquivo(arquivo_saida, f"Resultado do metodo de Euler\n[ ")
     for i in range(len(resultados)):
-        common.escrever_arquivo(arquivo_saida, f"{i}({resultados[i][0]:.4f}, {resultados[i][1]:.4f})")
+        common.escrever_arquivo(arquivo_saida, f"{i}({resultados[i][0]:.5f}, {resultados[i][1]:.5f})")
         if i == len(resultados) - 1:
             common.escrever_arquivo(arquivo_saida, f" ]")
         else:

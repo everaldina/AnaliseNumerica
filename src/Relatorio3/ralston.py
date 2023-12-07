@@ -26,11 +26,11 @@ def ralston(expressao, h, a, b, y0):
 
 def main():
     ##### EXERCICIO 12.3 #####
-    input = "exercicio_12.3.txt"
-    output = "exercicio_12.3.txt"
+    #input = "exercicio_12.3.txt"
+    #output = "exercicio_12.3.txt"
     ##### EXERCICIO 12.10 #####
-    input = "exercicio_12.10.txt"
-    output = "exercicio_12.10.txt"
+    #input = "exercicio_12.10.txt"
+    #output = "exercicio_12.10.txt"
     ##### EXERCICIO 12.16 #####
     #input = "exercicio_12.16_1.txt"
     #output = "exercicio_12.16_1.txt"
@@ -74,7 +74,7 @@ def main():
     # escreve os resultados no arquivo de saida
     common.escrever_arquivo(arquivo_saida, f"Resultado do metodo de Ralston\n[ ")
     for i in range(len(resultados)):
-        common.escrever_arquivo(arquivo_saida, f"{i}({resultados[i][0]:.4f}, {resultados[i][1]:.4f})")
+        common.escrever_arquivo(arquivo_saida, f"{i}({resultados[i][0]:.5f}, {resultados[i][1]:.5f})")
         if i == len(resultados) - 1:
             common.escrever_arquivo(arquivo_saida, f" ]")
         else:

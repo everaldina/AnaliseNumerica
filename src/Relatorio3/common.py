@@ -35,34 +35,3 @@ def abrir_entrada(metodo, nome_arquivo):
         return None
     
     return entrada
-
-def result_sistema(matrizA, matrizB, matrizX):
-    n = sp.shape(matrizA)[0]
-    variaveis = sp.symbols('x0:%d' % n)
-    
-    # calcula solução do sistema
-    solucao = sp.solve(matrizA*matrizX - matrizB, variaveis)
-    
-
-    # cria matriz solucao
-    matriz_solucao = sp.Matrix([])
-    for i in range(n):
-        matriz_solucao = matriz_solucao.row_insert(i, sp.Matrix([solucao[variaveis[i]]]))
-    
-    # retorna a matriz solução
-    return matriz_solucao
-
-
-# retorna um polinomio a partir de um vetor de coeficientes
-def criar_polinomio(vet_a, var):
-    n = len(vet_a)
-    polinomio = ""
-    for i in range(n):
-        if i == 0:
-            polinomio += str(vet_a[i,0]) + " + (" 
-        elif i == n-1:
-            polinomio += str(vet_a[i,0]) + "* " + str(var) +"**" + str(i) + ")"
-        else:
-            polinomio += str(vet_a[i,0]) + "* "+ str(var) + "**" + str(i) + ") + ("
-            
-    return sp.sympify(polinomio)
