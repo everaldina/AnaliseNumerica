@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 
 x = sp.symbols('x')
@@ -53,13 +53,13 @@ def main():
     #output = "exercicio_11.11.txt" 
     
     metodo = "simpson_1_3"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
         entrada = entrada.split('\n') # separando as linhas
         
-        expressao = common.expr_val(entrada[0])
+        expressao = utils.expr_val(entrada[0])
         limite_inf = sp.sympify(entrada[1]).evalf()
         limite_sup = sp.sympify(entrada[2]).evalf()
         divisoes = int(entrada[3])
@@ -67,14 +67,14 @@ def main():
         
 
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
     
     integral_simples = simpson_simples(expressao, limite_inf, limite_sup)
     integral_multiplo = simpson_multiplo(expressao, limite_inf, limite_sup, divisoes)
     
-    common.escrever_arquivo(arquivo_saida, "Integral simples: " + str(integral_simples) + "\n")
-    common.escrever_arquivo(arquivo_saida, "Integral multipla: " + str(integral_multiplo))
+    utils.escrever_arquivo(arquivo_saida, "Integral simples: " + str(integral_simples) + "\n")
+    utils.escrever_arquivo(arquivo_saida, "Integral multipla: " + str(integral_multiplo))
     
     
     arquivo_saida.close()

@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 
 x = sp.symbols('x')
@@ -15,11 +15,11 @@ def secante(expressao, x0, x1, precisao, arquivo_saida):
         x1_val = x1
         
         # escreve a primeira linha com os argumentos da funcao
-        common.escrever_arquivo(arquivo_saida, f'{k:<7}\t')         
-        common.escrever_arquivo(arquivo_saida, f'{x0_val:.5f}{"":<5}')           
-        common.escrever_arquivo(arquivo_saida, f'{expressao.subs(x, x0_val).evalf():.5f}{"":<5}')           
-        common.escrever_arquivo(arquivo_saida, f'{x1_val:.5f}{"":<5}')           
-        common.escrever_arquivo(arquivo_saida, f'{expressao.subs(x, x1_val).evalf():.5f}{"":<5}\n')
+        utils.escrever_arquivo(arquivo_saida, f'{k:<7}\t')         
+        utils.escrever_arquivo(arquivo_saida, f'{x0_val:.5f}{"":<5}')           
+        utils.escrever_arquivo(arquivo_saida, f'{expressao.subs(x, x0_val).evalf():.5f}{"":<5}')           
+        utils.escrever_arquivo(arquivo_saida, f'{x1_val:.5f}{"":<5}')           
+        utils.escrever_arquivo(arquivo_saida, f'{expressao.subs(x, x1_val).evalf():.5f}{"":<5}\n')
         
         k+=1
         while True:
@@ -28,16 +28,16 @@ def secante(expressao, x0, x1, precisao, arquivo_saida):
             fxk_1_val = expressao.subs(x, x0_val).evalf()
             
             # escreve no arquivo de saida
-            common.escrever_arquivo(arquivo_saida, f'{k:<7}\t')         
-            common.escrever_arquivo(arquivo_saida, f'{x1_val:.5f}{"":<5}')           
-            common.escrever_arquivo(arquivo_saida, f'{fxk_val:.5f}{"":<5}')
+            utils.escrever_arquivo(arquivo_saida, f'{k:<7}\t')         
+            utils.escrever_arquivo(arquivo_saida, f'{x1_val:.5f}{"":<5}')           
+            utils.escrever_arquivo(arquivo_saida, f'{fxk_val:.5f}{"":<5}')
             
             # calcula o proximo ponto xk
             xkpp_val = sp.simplify(exp_sec.subs(xk, x1_val).subs(fxk, fxk_val).subs(xk_1, x0_val).subs(fxk_1, fxk_1_val)).evalf()           
             f_xkpp_val = expressao.subs(x, xkpp_val).evalf()
             
-            common.escrever_arquivo(arquivo_saida, f'{xkpp_val:.5f}{"":<5}')           
-            common.escrever_arquivo(arquivo_saida, f'{f_xkpp_val:.5f}{"":<5}\n')
+            utils.escrever_arquivo(arquivo_saida, f'{xkpp_val:.5f}{"":<5}')           
+            utils.escrever_arquivo(arquivo_saida, f'{f_xkpp_val:.5f}{"":<5}\n')
             
             
             
@@ -73,36 +73,36 @@ def main():
     #output = "exercicio_3.8-B.txt"
     
     metodo = "secante"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
         entrada = entrada.split('\n')
         if len(entrada) == 4:
-            x0 = common.expr_val(entrada[0])
-            x1 = common.expr_val(entrada[1])
-            precisao = common.expr_val(entrada[2])
-            expressao = common.expr_val(entrada[3])
+            x0 = utils.expr_val(entrada[0])
+            x1 = utils.expr_val(entrada[1])
+            precisao = utils.expr_val(entrada[2])
+            expressao = utils.expr_val(entrada[3])
         else:
             return
     
     if expressao is None or x0 is None or x1 is None or precisao is None:
         return
     else:
-        arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
         arquivo_saida = open(arquivo_saida, 'w')
-        common.escrever_arquivo(arquivo_saida, f"k{'':<10}xk{'':<9}fxk{'':<9}xk+1{'':<9}fxk+1")
-        common.escrever_arquivo(arquivo_saida, f"\n")
+        utils.escrever_arquivo(arquivo_saida, f"k{'':<10}xk{'':<9}fxk{'':<9}xk+1{'':<9}fxk+1")
+        utils.escrever_arquivo(arquivo_saida, f"\n")
         raiz = secante(expressao, x0, x1, precisao, arquivo_saida)
-        common.escrever_arquivo(arquivo_saida, "\nx(k+1) = ((fxk*(xk-1)) - ((fxk-1) *xk))/(fxk - (fxk-1))\n")
+        utils.escrever_arquivo(arquivo_saida, "\nx(k+1) = ((fxk*(xk-1)) - ((fxk-1) *xk))/(fxk - (fxk-1))\n")
         if raiz is not None:
             result = expressao.subs(x, raiz)
             if result == 0:
-                common.escrever_arquivo(arquivo_saida, f'\nA raiz da funcao eh: {raiz}')
+                utils.escrever_arquivo(arquivo_saida, f'\nA raiz da funcao eh: {raiz}')
             else:
-                common.escrever_arquivo(arquivo_saida, f'\nA raiz (aproximada) da funcao eh: {raiz}')
+                utils.escrever_arquivo(arquivo_saida, f'\nA raiz (aproximada) da funcao eh: {raiz}')
         else:
-            common.escrever_arquivo(arquivo_saida, '\nNão foi possível encontrar uma raiz')
+            utils.escrever_arquivo(arquivo_saida, '\nNão foi possível encontrar uma raiz')
         arquivo_saida.close()
         return
         

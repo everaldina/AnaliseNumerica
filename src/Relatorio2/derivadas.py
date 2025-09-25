@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 
 x = sp.Symbol('x')
@@ -46,18 +46,18 @@ def main():
     output = "exemplo_8.1.2_iii.txt"
     
     metodo = "derivadas"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
         entrada = entrada.split('\n') # separando as linhas
         
-        expressao = common.expr_val(entrada[0])
+        expressao = utils.expr_val(entrada[0])
         x = sp.sympify(entrada[1]).evalf()
         h = sp.sympify(entrada[2]).evalf()
         
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
     
     d_progressiva = derivada_progressiva(expressao, x, h)
@@ -65,10 +65,10 @@ def main():
     d_central = derivada_central(expressao, x, h)
     d_segunda = derivada_segunda_ordem(expressao, x, h)
     
-    common.escrever_arquivo(arquivo_saida, f"Derivada progressiva: {d_progressiva}\n")
-    common.escrever_arquivo(arquivo_saida, f"Derivada retardada: {d_retardada}\n")
-    common.escrever_arquivo(arquivo_saida, f"Derivada central: {d_central}\n")
-    common.escrever_arquivo(arquivo_saida, f"Derivada de segunda ordem: {d_segunda}\n")
+    utils.escrever_arquivo(arquivo_saida, f"Derivada progressiva: {d_progressiva}\n")
+    utils.escrever_arquivo(arquivo_saida, f"Derivada retardada: {d_retardada}\n")
+    utils.escrever_arquivo(arquivo_saida, f"Derivada central: {d_central}\n")
+    utils.escrever_arquivo(arquivo_saida, f"Derivada de segunda ordem: {d_segunda}\n")
     
     arquivo_saida.close()
     return

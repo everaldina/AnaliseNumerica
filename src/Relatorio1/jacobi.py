@@ -1,10 +1,10 @@
 import sympy as sp
-import common
+import utils
 import os
 
 def jacobi(arquivo_saida, matrizB, vetorG, precisao, vet_inical = None):
     # verifica se a matriz B como é convergente 
-    if common.check_converge(matrizB):
+    if utils.check_converge(matrizB):
         n = sp.shape(matrizB)[0]
         
         # se vet_inical for None, vet_inical = vetor nulo
@@ -13,8 +13,8 @@ def jacobi(arquivo_saida, matrizB, vetorG, precisao, vet_inical = None):
 
         k = 0 # contador de iterações
         
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(vet_inical, f"x{k}", 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
+        utils.escrever_arquivo(arquivo_saida, utils.print_matriz(vet_inical, f"x{k}", 'n'))
+        utils.escrever_arquivo(arquivo_saida, "\n")
         # vet_0 recebe vet_inical
         vet_0 = vet_inical.copy()
         
@@ -22,16 +22,16 @@ def jacobi(arquivo_saida, matrizB, vetorG, precisao, vet_inical = None):
         vet_1 = matrizB*vet_0 + vetorG
         
         # calcula erro absoluto e relativo
-        eabs, erel = common.return_variacao(vet_1, vet_0)
+        eabs, erel = utils.return_variacao(vet_1, vet_0)
         
         # enquanto erro absoluto ou relativo for maior que precisao continua iteração
         while(eabs > precisao or erel > precisao):
             vet_0 = vet_1.copy() # vet_0 recebe vet_1
             k+=1
-            common.escrever_arquivo(arquivo_saida, common.print_matriz(vet_0, f"x{k}", 'n'))
-            common.escrever_arquivo(arquivo_saida, f"\t eabsoluto: {eabs:.5f} | erelativo: {erel:.5f}\n")
+            utils.escrever_arquivo(arquivo_saida, utils.print_matriz(vet_0, f"x{k}", 'n'))
+            utils.escrever_arquivo(arquivo_saida, f"\t eabsoluto: {eabs:.5f} | erelativo: {erel:.5f}\n")
             vet_1 = matrizB*vet_0 + vetorG # recalcula vet_1
-            eabs, erel = common.return_variacao(vet_1, vet_0) # recalcula erro absoluto e relativo
+            eabs, erel = utils.return_variacao(vet_1, vet_0) # recalcula erro absoluto e relativo
         return vet_0
     else:
         return None
@@ -47,7 +47,7 @@ def main():
 
     
     metodo = "jacobi"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -56,13 +56,13 @@ def main():
         
         # caso as entradas sejam x0 forem esfecificadas
         if x0_definido:
-            n = common.expr_val(entrada[1]) # quantidade de expressoes
+            n = utils.expr_val(entrada[1]) # quantidade de expressoes
             x0 = sp.Matrix(entrada[0].split(' ')[1:])
-            precisao = common.expr_val(entrada[2])
+            precisao = utils.expr_val(entrada[2])
             b = sp.Matrix(entrada[3].split(' '))
         else:
-            n = common.expr_val(entrada[0]) #quantidade de expressoes
-            precisao = common.expr_val(entrada[1])
+            n = utils.expr_val(entrada[0]) #quantidade de expressoes
+            precisao = utils.expr_val(entrada[1])
             b = sp.Matrix(entrada[2].split(' '))
             x0 = None
 
@@ -82,30 +82,30 @@ def main():
             matrizA = matrizA.row_insert(n-1, sp.Matrix([entrada[len(entrada)-1].split(' ')[0:]]))
     #print(matrizA, b, matrizX)
     # verifica se o sistema tem solução
-    if not common.check_sistema_solucao(matrizA, b, matrizX):
+    if not utils.check_sistema_solucao(matrizA, b, matrizX):
         return
     else:
-        arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
         arquivo_saida = open(arquivo_saida, 'w')
         # escrevendo matrizes de entrada
         
         
-        matB = common.return_matrizB(matrizA, n)
-        vetG = common.return_vetorG(matrizA, b, n)
+        matB = utils.return_matrizB(matrizA, n)
+        vetG = utils.return_vetorG(matrizA, b, n)
         
         # matriz na forma de jacobi
-        common.escrever_arquivo(arquivo_saida, "Matriz B:\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matB, 'B', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, "Vetor G:\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(vetG, 'G', 'n'))    
+        utils.escrever_arquivo(arquivo_saida, "Matriz B:\n")
+        utils.escrever_arquivo(arquivo_saida, utils.print_matriz(matB, 'B', 'n'))
+        utils.escrever_arquivo(arquivo_saida, "\n")
+        utils.escrever_arquivo(arquivo_saida, "Vetor G:\n")
+        utils.escrever_arquivo(arquivo_saida, utils.print_matriz(vetG, 'G', 'n'))    
         
         
-        common.escrever_arquivo(arquivo_saida, "\n\nIteracoes:\n")
+        utils.escrever_arquivo(arquivo_saida, "\n\nIteracoes:\n")
         result = jacobi(arquivo_saida, matB, vetG, precisao, x0)
         
-        common.escrever_arquivo(arquivo_saida, f"\nAproximacao com {precisao} de precisa: ")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(result, 'x', 'n'))
+        utils.escrever_arquivo(arquivo_saida, f"\nAproximacao com {precisao} de precisa: ")
+        utils.escrever_arquivo(arquivo_saida, utils.print_matriz(result, 'x', 'n'))
         
         
         

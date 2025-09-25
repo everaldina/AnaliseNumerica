@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 from integracao_trapezio import trapezio_multiplo
 
@@ -32,13 +32,13 @@ def main():
     #output = "exercicio_11.11.txt" 
     
     metodo = "extrapolacao_richards"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
         entrada = entrada.split('\n') # separando as linhas
         
-        expressao = common.expr_val(entrada[0])
+        expressao = utils.expr_val(entrada[0])
         limite_inf = sp.sympify(entrada[1]).evalf()
         limite_sup = sp.sympify(entrada[2]).evalf()
         n1 = int(entrada[3])
@@ -47,14 +47,14 @@ def main():
         
 
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
     
     i1, i2, h1, h2, integral = extrapolacao_richards(expressao, limite_inf, limite_sup, n1, n2)
     
-    common.escrever_arquivo(arquivo_saida, f"I({h1}) = {i1}\n")
-    common.escrever_arquivo(arquivo_saida, f"I({h2}) = {i2}\n")
-    common.escrever_arquivo(arquivo_saida, f"Extrapolacao de Richards: {integral}\n")
+    utils.escrever_arquivo(arquivo_saida, f"I({h1}) = {i1}\n")
+    utils.escrever_arquivo(arquivo_saida, f"I({h2}) = {i2}\n")
+    utils.escrever_arquivo(arquivo_saida, f"Extrapolacao de Richards: {integral}\n")
     
     arquivo_saida.close()
     return

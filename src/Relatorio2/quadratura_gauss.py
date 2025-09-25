@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 from sympy.integrals.quadrature import gauss_legendre
 
@@ -43,13 +43,13 @@ def main():
     #output = "exercicio_11.11.txt" 
     
     metodo = "quadratura_gauss"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
         entrada = entrada.split('\n') # separando as linhas
         
-        expressao = common.expr_val(entrada[0])
+        expressao = utils.expr_val(entrada[0])
         limite_inf = sp.sympify(entrada[1]).evalf()
         limite_sup = sp.sympify(entrada[2]).evalf()
         pontos = int(entrada[3]) 
@@ -57,12 +57,12 @@ def main():
         
 
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
     
     integral = quadratura_gauss(expressao, limite_inf, limite_sup, pontos)
     
-    common.escrever_arquivo(arquivo_saida, f"Integral por quadratura de Gauss ({pontos} pontos): {integral}\n")
+    utils.escrever_arquivo(arquivo_saida, f"Integral por quadratura de Gauss ({pontos} pontos): {integral}\n")
     
     arquivo_saida.close()
     return

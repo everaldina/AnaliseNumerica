@@ -1,4 +1,4 @@
-import common
+import utils
 import sympy as sp
 import os
 import random
@@ -53,7 +53,7 @@ def aproximacao_polinomial(pontos, grau = None):
         vet_yU[i, 0] = vet_y.dot(vet_U[i])
         
     # resolvendo o sistema
-    vet_a = common.result_sistema(mat_UU, vet_yU, vet_a)
+    vet_a = utils.result_sistema(mat_UU, vet_yU, vet_a)
     
     return vet_a    
 
@@ -73,7 +73,7 @@ def main():
     
     
     metodo = "MMQ_discreta"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -87,7 +87,7 @@ def main():
         
 
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
     
     # return a0, a1, cof_det, cof_cor, desvio_padrao
@@ -97,15 +97,15 @@ def main():
     # imprimindo polinimo
     for i in range(cof_size):
         if i == cof_size-1:
-            common.escrever_arquivo(arquivo_saida, f"{coeficiente_a[i, 0]}x^{i})\n\n")
+            utils.escrever_arquivo(arquivo_saida, f"{coeficiente_a[i, 0]}x^{i})\n\n")
         elif i == 0:
-            common.escrever_arquivo(arquivo_saida, f"f(x) = {coeficiente_a[i, 0]} + (")
+            utils.escrever_arquivo(arquivo_saida, f"f(x) = {coeficiente_a[i, 0]} + (")
         else:
-            common.escrever_arquivo(arquivo_saida, f"{coeficiente_a[i, 0]}x^{i}) + (")
+            utils.escrever_arquivo(arquivo_saida, f"{coeficiente_a[i, 0]}x^{i}) + (")
     
     # imprimindo coeficientes
     for i in range(cof_size):
-        common.escrever_arquivo(arquivo_saida, f"a{i} = {coeficiente_a[i, 0]}\n")
+        utils.escrever_arquivo(arquivo_saida, f"a{i} = {coeficiente_a[i, 0]}\n")
     
     
     arquivo_saida.close()

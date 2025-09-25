@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 
 x = sp.symbols('x')
@@ -19,10 +19,10 @@ def newton_raphson(expressao, x0, precisao, arquivo_saida):
             
         
         # escreve no arquivo de saida
-        common.escrever_arquivo(arquivo_saida, f'{k:<7}\t')         
-        common.escrever_arquivo(arquivo_saida, f'{xk.subs(xk, xk_val).evalf():.5f}{"":<5}')           
-        common.escrever_arquivo(arquivo_saida, f'{fxk.subs(fxk, fxk_val).evalf():.5f}{"":<5}')           
-        common.escrever_arquivo(arquivo_saida, f'{f_xk.subs(f_xk, f_xk_val).evalf():.5f}{"":<5}\n')
+        utils.escrever_arquivo(arquivo_saida, f'{k:<7}\t')         
+        utils.escrever_arquivo(arquivo_saida, f'{xk.subs(xk, xk_val).evalf():.5f}{"":<5}')           
+        utils.escrever_arquivo(arquivo_saida, f'{fxk.subs(fxk, fxk_val).evalf():.5f}{"":<5}')           
+        utils.escrever_arquivo(arquivo_saida, f'{f_xk.subs(f_xk, f_xk_val).evalf():.5f}{"":<5}\n')
           
         
         
@@ -57,15 +57,15 @@ def main():
     #output = "exercicio_3.8-B.txt"
     
     metodo = "newton-raphson"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
         entrada = entrada.split('\n')
         if len(entrada) == 3:
-            x0 = common.expr_val(entrada[0])
-            precisao = common.expr_val(entrada[1])
-            expressao = common.expr_val(entrada[2])
+            x0 = utils.expr_val(entrada[0])
+            precisao = utils.expr_val(entrada[1])
+            expressao = utils.expr_val(entrada[2])
         else:
             return
     
@@ -73,20 +73,20 @@ def main():
     if expressao is None or x0 is None or precisao is None:
         return
     else:
-        arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
         arquivo_saida = open(arquivo_saida, 'w')
-        common.escrever_arquivo(arquivo_saida, f"k{'':<10}xk{'':<10}fxk{'':<9}f'xk")
-        common.escrever_arquivo(arquivo_saida, f"\n")
+        utils.escrever_arquivo(arquivo_saida, f"k{'':<10}xk{'':<10}fxk{'':<9}f'xk")
+        utils.escrever_arquivo(arquivo_saida, f"\n")
         raiz = newton_raphson(expressao, x0, precisao, arquivo_saida)
-        common.escrever_arquivo(arquivo_saida, "\nx(k+1) = xk - (fxk)/(f'xk)\n")
+        utils.escrever_arquivo(arquivo_saida, "\nx(k+1) = xk - (fxk)/(f'xk)\n")
         if raiz is not None:
             result = expressao.subs(x, raiz)
             if result == 0:
-                common.escrever_arquivo(arquivo_saida, f'\nA raiz da funcao eh: {raiz}')
+                utils.escrever_arquivo(arquivo_saida, f'\nA raiz da funcao eh: {raiz}')
             else:
-                common.escrever_arquivo(arquivo_saida, f'\nA raiz (aproximada) da funcao eh: {raiz}')
+                utils.escrever_arquivo(arquivo_saida, f'\nA raiz (aproximada) da funcao eh: {raiz}')
         else:
-            common.escrever_arquivo(arquivo_saida, '\nNão foi possível encontrar uma raiz')
+            utils.escrever_arquivo(arquivo_saida, '\nNão foi possível encontrar uma raiz')
         arquivo_saida.close()
         return
         

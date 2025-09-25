@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 
 # verifica Teorema 4.1 - Teorema LU
@@ -55,10 +55,10 @@ def fatoracao_LU(matrizA, matrizB, matrizX):
     
     
     # calcula os valores de Y
-    matriz_y = common.result_sistema(matrizL, matrizB, matriz_y)
+    matriz_y = utils.result_sistema(matrizL, matrizB, matriz_y)
     
     # calcula os valores de X
-    matriz_solucao = common.result_sistema(matrizU, matriz_y, matrizX)
+    matriz_solucao = utils.result_sistema(matrizU, matriz_y, matrizX)
     return matrizL, matrizU, matriz_y, matriz_solucao
 
 
@@ -74,13 +74,13 @@ def main():
     output = "exercicio_4.6.txt"
     
     metodo = "fatoracao_LU"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
         entrada = entrada.split('\n')
         #dimensao da matriz
-        n = common.expr_val(entrada[0])
+        n = utils.expr_val(entrada[0])
         #criando matrizB
         matrizB = sp.Matrix(entrada[1].split(' '))
         #criando matrizX
@@ -94,24 +94,24 @@ def main():
             matrizA = matrizA.row_insert(i, sp.Matrix([entrada[i].split(' ')]))
         
     # verifica se o sistema tem solução e se a matriz A pode ser decomposta
-    if not common.check_sistema_solucao(matrizA, matrizB, matrizX) or not check_requisito_decomposicao(matrizA):
+    if not utils.check_sistema_solucao(matrizA, matrizB, matrizX) or not check_requisito_decomposicao(matrizA):
         return
     else:
-        arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
         arquivo_saida = open(arquivo_saida, 'w')
         
         matrizL, matrizU, matriz_y, result = fatoracao_LU(matrizA, matrizB, matrizX)
         
         # escrevendo matrizes L, U e Y
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizL, 'L', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matrizU, 'U', 'n'))
-        common.escrever_arquivo(arquivo_saida, "\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(matriz_y, 'Y', 's'))
+        utils.escrever_arquivo(arquivo_saida, utils.print_matriz(matrizL, 'L', 'n'))
+        utils.escrever_arquivo(arquivo_saida, "\n")
+        utils.escrever_arquivo(arquivo_saida, utils.print_matriz(matrizU, 'U', 'n'))
+        utils.escrever_arquivo(arquivo_saida, "\n")
+        utils.escrever_arquivo(arquivo_saida, utils.print_matriz(matriz_y, 'Y', 's'))
 
         # escrevendo resultado
-        common.escrever_arquivo(arquivo_saida, "\nResultado:\n")
-        common.escrever_arquivo(arquivo_saida, common.print_matriz(result, 'X', 'n'))
+        utils.escrever_arquivo(arquivo_saida, "\nResultado:\n")
+        utils.escrever_arquivo(arquivo_saida, utils.print_matriz(result, 'X', 'n'))
         
         arquivo_saida.close()
         return

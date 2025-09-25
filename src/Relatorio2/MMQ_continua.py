@@ -1,4 +1,4 @@
-import common
+import utils
 import sympy as sp
 import os
 from MMQ_discreta import aproximacao_polinomial as aproximacao_MMQd
@@ -30,7 +30,7 @@ def aproximacao_polinomial(expressao, grau, limite_inf, limite_sup):
         vet_fx[i,0] = sp.integrate(expressao * (x**i), (x, limite_inf, limite_sup))
     
     # calculando matriz A
-    vet_A = common.result_sistema(mat_X, vet_fx, vet_A)
+    vet_A = utils.result_sistema(mat_X, vet_fx, vet_A)
     
     return vet_A
 
@@ -48,7 +48,7 @@ def main():
     output = "exercicio_10.6_3.txt"   
     
     metodo = "MMQ_continua"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -76,13 +76,13 @@ def main():
         
 
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
     
     # caso sejam dados pontos para aproximar isso é feito por uma aproximação polinomial discreta
     if mmqd:
         vet_a = aproximacao_MMQd(pontos)
-        expressao = common.criar_polinomio(vet_a, x)
+        expressao = utils.criar_polinomio(vet_a, x)
         
         
     # return a0, a1, cof_det, cof_cor, desvio_padrao
@@ -90,20 +90,20 @@ def main():
     cof_size = len(coeficiente_a)
     
     # imprimindo entrada
-    common.escrever_arquivo(arquivo_saida, f"Aproximacao polinomial de grau {grau}\nf(x) = {expressao}\nintervalo: [{limite_inf}, {limite_sup}]\n\n")
+    utils.escrever_arquivo(arquivo_saida, f"Aproximacao polinomial de grau {grau}\nf(x) = {expressao}\nintervalo: [{limite_inf}, {limite_sup}]\n\n")
     
     # imprimindo polinimo
     for i in range(cof_size):
         if i == cof_size-1:
-            common.escrever_arquivo(arquivo_saida, f"{coeficiente_a[i, 0]}x^{i})\n\n")
+            utils.escrever_arquivo(arquivo_saida, f"{coeficiente_a[i, 0]}x^{i})\n\n")
         elif i == 0:
-            common.escrever_arquivo(arquivo_saida, f"f(x) = {coeficiente_a[i, 0]} + (")
+            utils.escrever_arquivo(arquivo_saida, f"f(x) = {coeficiente_a[i, 0]} + (")
         else:
-            common.escrever_arquivo(arquivo_saida, f"{coeficiente_a[i, 0]}x^{i}) + (")
+            utils.escrever_arquivo(arquivo_saida, f"{coeficiente_a[i, 0]}x^{i}) + (")
     
     # imprimindo coeficientes
     for i in range(cof_size):
-        common.escrever_arquivo(arquivo_saida, f"a{i} = {coeficiente_a[i, 0]}\n")
+        utils.escrever_arquivo(arquivo_saida, f"a{i} = {coeficiente_a[i, 0]}\n")
     
     
     arquivo_saida.close()

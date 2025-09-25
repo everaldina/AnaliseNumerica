@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 
 def regressao_linear(pontos): 
@@ -76,7 +76,7 @@ def main():
     #output = "exercicio_8.11.txt"
     
     metodo = "regressao_linear"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -95,7 +95,7 @@ def main():
         
 
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
     
     # return a0, a1, cof_det, cof_cor, desvio_padrao
@@ -104,17 +104,17 @@ def main():
     
     
     # escrevendo resultado para funcao linear
-    common.escrever_arquivo(arquivo_saida, f"f(x) = {a0} + {a1}x\n")
-    common.escrever_arquivo(arquivo_saida, f"a0 = {a0} | a1 = {a1}\n")
+    utils.escrever_arquivo(arquivo_saida, f"f(x) = {a0} + {a1}x\n")
+    utils.escrever_arquivo(arquivo_saida, f"a0 = {a0} | a1 = {a1}\n")
     
     # escrevendo resultado para funcao potencial
-    #common.escrever_arquivo(arquivo_saida, f"f(x) = {sp.exp(a0)}x^{a1}\n")
-    #common.escrever_arquivo(arquivo_saida, f"a = {sp.exp(a0)} | b = {a1}\n")
+    #utils.escrever_arquivo(arquivo_saida, f"f(x) = {sp.exp(a0)}x^{a1}\n")
+    #utils.escrever_arquivo(arquivo_saida, f"a = {sp.exp(a0)} | b = {a1}\n")
     
     # escrevendo medidas estatisticas
-    common.escrever_arquivo(arquivo_saida, f"r^2 = {coef_determinacao}\n")
-    common.escrever_arquivo(arquivo_saida, f"r = {coef_correlacao}\n")
-    common.escrever_arquivo(arquivo_saida, f"S(x/y) = {desvio_padrao}")
+    utils.escrever_arquivo(arquivo_saida, f"r^2 = {coef_determinacao}\n")
+    utils.escrever_arquivo(arquivo_saida, f"r = {coef_correlacao}\n")
+    utils.escrever_arquivo(arquivo_saida, f"S(x/y) = {desvio_padrao}")
     
     arquivo_saida.close()
     return

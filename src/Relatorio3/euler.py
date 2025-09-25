@@ -1,4 +1,4 @@
-import common
+import utils
 import sympy as sp
 import os
 
@@ -35,7 +35,7 @@ def main():
     #output = "exercicio_12.16_2.txt" 
     
     metodo = "euler"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         print("Entrada nula")
         return
@@ -45,7 +45,7 @@ def main():
         if len(entrada) != 4:
             print("Entrada invalida")
             return
-        expressao = common.expr_val(entrada[0]) # expressao
+        expressao = utils.expr_val(entrada[0]) # expressao
         amplitude = float(entrada[1]) # amplitude
         
         # limites inferior e superior
@@ -61,7 +61,7 @@ def main():
         
 
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
         
         
@@ -69,15 +69,15 @@ def main():
     resultados = euler(expressao, amplitude, limite_inf, limite_sup, valor_inicial)
     
     # escreve os resultados no arquivo de saida
-    common.escrever_arquivo(arquivo_saida, f"Resultado do metodo de Euler\n[ ")
+    utils.escrever_arquivo(arquivo_saida, f"Resultado do metodo de Euler\n[ ")
     for i in range(len(resultados)):
-        common.escrever_arquivo(arquivo_saida, f"{i}({resultados[i][0]:.5f}, {resultados[i][1]:.5f})")
+        utils.escrever_arquivo(arquivo_saida, f"{i}({resultados[i][0]:.5f}, {resultados[i][1]:.5f})")
         if i == len(resultados) - 1:
-            common.escrever_arquivo(arquivo_saida, f" ]")
+            utils.escrever_arquivo(arquivo_saida, f" ]")
         else:
-            common.escrever_arquivo(arquivo_saida, f", ")
+            utils.escrever_arquivo(arquivo_saida, f", ")
         if i % 3 == 0 and i:
-            common.escrever_arquivo(arquivo_saida, "\n  ")
+            utils.escrever_arquivo(arquivo_saida, "\n  ")
     
     
     arquivo_saida.close()

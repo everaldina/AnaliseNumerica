@@ -1,11 +1,11 @@
 import sympy as sp
-import common 
+import utils 
 import os 
 
 x = sp.symbols('x')
 
 def posicao_falsa(expressao, a, b, precisao, arquivo_saida):
-    if common.check_solution(expressao, a, b):
+    if utils.check_solution(expressao, a, b):
         k = 1
         
         exp_falsa = sp.simplify("((ax * fbx) - (bx * fax)) / (fbx - fax)")
@@ -26,15 +26,15 @@ def posicao_falsa(expressao, a, b, precisao, arquivo_saida):
             
             
             # escreve no arquivo de saida
-            common.escrever_arquivo(arquivo_saida, f'{k:<7}\t')         
-            common.escrever_arquivo(arquivo_saida, f'{a:.5f}{"":<5}')           
-            common.escrever_arquivo(arquivo_saida, f'{b:.5f}{"":<5}')           
-            common.escrever_arquivo(arquivo_saida, f'{fa:.5f}{"":<5}')           
-            common.escrever_arquivo(arquivo_saida, f'{fb:.5f}{"":<5}')           
-            common.escrever_arquivo(arquivo_saida, f'{aprox:.5f}{"":<5}')           
-            common.escrever_arquivo(arquivo_saida, f'{aprox_relativa:.5f}{"":<5}')           
-            common.escrever_arquivo(arquivo_saida, f'{sp.N(xk, 5)}{"":<5}')          
-            common.escrever_arquivo(arquivo_saida, f'{sp.N(fxk, 5)}\n')    
+            utils.escrever_arquivo(arquivo_saida, f'{k:<7}\t')         
+            utils.escrever_arquivo(arquivo_saida, f'{a:.5f}{"":<5}')           
+            utils.escrever_arquivo(arquivo_saida, f'{b:.5f}{"":<5}')           
+            utils.escrever_arquivo(arquivo_saida, f'{fa:.5f}{"":<5}')           
+            utils.escrever_arquivo(arquivo_saida, f'{fb:.5f}{"":<5}')           
+            utils.escrever_arquivo(arquivo_saida, f'{aprox:.5f}{"":<5}')           
+            utils.escrever_arquivo(arquivo_saida, f'{aprox_relativa:.5f}{"":<5}')           
+            utils.escrever_arquivo(arquivo_saida, f'{sp.N(xk, 5)}{"":<5}')          
+            utils.escrever_arquivo(arquivo_saida, f'{sp.N(fxk, 5)}\n')    
             
             
             # caso f(xk) = 0, então xk é a raiz
@@ -74,36 +74,36 @@ def main():
     #output = "exercicio_3.8-B.txt"
     
     metodo = "posicao_falsa"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
         entrada = entrada.split('\n')
         if len(entrada) == 4:
-            a = common.expr_val(entrada[0])
-            b = common.expr_val(entrada[1])
-            precisao = common.expr_val(entrada[2])
-            expressao = common.expr_val(entrada[3])
+            a = utils.expr_val(entrada[0])
+            b = utils.expr_val(entrada[1])
+            precisao = utils.expr_val(entrada[2])
+            expressao = utils.expr_val(entrada[3])
         else:
             return
     
     if expressao is None or a is None or b is None or precisao is None:
         return
     else:
-        arquivo_saida = os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+        arquivo_saida = os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
         arquivo_saida = open(arquivo_saida, 'w')
         
-        common.escrever_arquivo(arquivo_saida, f'k{"":<10}a{"":<11}b{"":<11}f(a){"":<8}f(b){"":<9}e{"":<9}e/|bk|{"":<7}xk{"":<7}f(xk)\n')
+        utils.escrever_arquivo(arquivo_saida, f'k{"":<10}a{"":<11}b{"":<11}f(a){"":<8}f(b){"":<9}e{"":<9}e/|bk|{"":<7}xk{"":<7}f(xk)\n')
         raiz = posicao_falsa(expressao, a, b, precisao, arquivo_saida)
-        common.escrever_arquivo(arquivo_saida, '\nxk = (ak * fbk - bk * fak) / (fbk - fak)\t\te = |(bk - ak)|\n')
+        utils.escrever_arquivo(arquivo_saida, '\nxk = (ak * fbk - bk * fak) / (fbk - fak)\t\te = |(bk - ak)|\n')
         if raiz is not None:
             result = expressao.subs(x, raiz)
             if result == 0:
-                common.escrever_arquivo(arquivo_saida, f'\nA raiz da funcao eh: {raiz}')
+                utils.escrever_arquivo(arquivo_saida, f'\nA raiz da funcao eh: {raiz}')
             else:
-                common.escrever_arquivo(arquivo_saida, f'\nA raiz (aproximada) da funcao eh: {raiz}')
+                utils.escrever_arquivo(arquivo_saida, f'\nA raiz (aproximada) da funcao eh: {raiz}')
         else:
-            common.escrever_arquivo(arquivo_saida, '\nNão foi possível encontrar uma raiz')
+            utils.escrever_arquivo(arquivo_saida, '\nNão foi possível encontrar uma raiz')
         arquivo_saida.close()
         return
         

@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 
 
@@ -51,7 +51,7 @@ def main():
     #output = "exercicio_10.9.txt"
     
     metodo = "interpolacao_newton"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
@@ -65,13 +65,13 @@ def main():
         
 
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
     
     # return polinomio
     polinimio = interpolacao_newton(pontos)
     
-    common.escrever_arquivo(arquivo_saida, f"f(x) = {polinimio}")
+    utils.escrever_arquivo(arquivo_saida, f"f(x) = {polinimio}")
     
     
     arquivo_saida.close()

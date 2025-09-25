@@ -1,37 +1,57 @@
 import sympy as sp
 import os
+from typing import Optional, Any
 
 diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 
-# retorna true se existe pelo menos uma raiz no intervalo [a, b]
+
+def analisar_limite(expressao, x, ponto, lado='both'):
+    """Analisa se o limite tende a +inf ou -inf"""
+    try:
+        # Tenta limite pela direita e pela esquerda
+        if lado == 'direita' or lado == 'both':
+            lim_dir = sp.limit(expressao, x, ponto, '+')
+        if lado == 'esquerda' or lado == 'both':
+            lim_esq = sp.limit(expressao, x, ponto, '-')
+        
+        # Se ambos os lados tendem ao mesmo infinito, retorna esse valor
+        if lado == 'both':
+            if lim_dir == lim_esq and lim_dir in [sp.oo, -sp.oo]:
+                return lim_dir
+            elif lim_dir in [sp.oo, -sp.oo]:
+                return lim_dir
+            elif lim_esq in [sp.oo, -sp.oo]:
+                return lim_esq
+        
+        if lado == 'direita' and lim_dir in [sp.oo, -sp.oo]:
+            return lim_dir
+        if lado == 'esquerda' and lim_esq in [sp.oo, -sp.oo]:
+            return lim_esq
+            
+    except:
+        pass
+    
+    return None
+
 def check_solution(expressao, a, b):
+    """Retorna true se existe pelo menos uma raiz no intervalo [a, b]"""
     x = sp.symbols('x')
     
     # calcula f(a) e f(b)
     fa = expressao.subs(x, a)
     fb = expressao.subs(x, b)
 
-    # pelo teorema Teorema 3.1
-    # se f(a) * f(b) < 0, então existe pelo menos uma raiz no intervalo [a, b] 
-    if fa * fb < 0:
-        return True
-    else:
-        return False
+    return fa * fb < 0
  
-# retorna o valor da expressão se ela for valida, caso contrario retorna None   
-def expr_val(expressao):
+def expr_val(expressao: Any) -> sp.Expr | None:
+    """Retorna o valor da expressão se ela for válida, caso contrário retorna None."""
     try:
-        # tenta analisar a expressão
-        expressao_analisada = sp.sympify(expressao)
-        
-        return expressao_analisada
-    
-    #caso nao seja uma expressao valida
-    except (sp.SympifyError, ValueError) as e:
+        return sp.sympify(expressao)
+    except (sp.SympifyError, ValueError, TypeError):
         return None
     
-# escreve no arquivo de saida
 def escrever_arquivo(arquivo, dados):
+    """Escreve os dados no arquivo de saida"""
     if arquivo is not None:
         try:
             arquivo.write(dados)
@@ -40,16 +60,47 @@ def escrever_arquivo(arquivo, dados):
     else:
         return None
     
-# abre o arquivo de entrada o conteudo
 def abrir_entrada(metodo, nome_arquivo):
+    """Abre o arquivo de entrada e retorna o conteudo"""
     nome_arquivo = os.path.join(diretorio_atual, 'inputs', metodo, nome_arquivo)
     try:
         with open(nome_arquivo, 'r') as arquivo:
             entrada = arquivo.read()
+        return entrada
     except FileNotFoundError:
         return None
+
+def result_sistema(matrizA, matrizB, matrizX):
+    n = sp.shape(matrizA)[0]
+    variaveis = sp.symbols('x0:%d' % n)
     
-    return entrada
+    # calcula solução do sistema
+    solucao = sp.solve(matrizA*matrizX - matrizB, variaveis)
+    
+
+    # cria matriz solucao
+    matriz_solucao = sp.Matrix([])
+    for i in range(n):
+        matriz_solucao = matriz_solucao.row_insert(i, sp.Matrix([solucao[variaveis[i]]]))
+    
+    # retorna a matriz solução
+    return matriz_solucao
+
+
+def criar_polinomio(vet_a, var):
+    """ Retorna um polinomio a partir de um vetor de coeficientes"""
+    n = len(vet_a)
+    polinomio = ""
+    for i in range(n):
+        if i == 0:
+            polinomio += str(vet_a[i,0]) + " + (" 
+        elif i == n-1:
+            polinomio += str(vet_a[i,0]) + "* " + str(var) +"**" + str(i) + ")"
+        else:
+            polinomio += str(vet_a[i,0]) + "* "+ str(var) + "**" + str(i) + ") + ("
+            
+    return sp.sympify(polinomio)
+
 
 def check_sistema_solucao(matrizA, matrizB, matrizX,):
     # verifica se as matrizes nao estao vazias
@@ -73,28 +124,12 @@ def check_sistema_solucao(matrizA, matrizB, matrizX,):
         return False
     else:
         return True
-
-def result_sistema(matrizA, matrizB, matrizX):
-    n = sp.shape(matrizA)[0]
-    variaveis = sp.symbols('x0:%d' % n)
     
-    # calcula solução do sistema
-    solucao = sp.solve(matrizA*matrizX - matrizB, variaveis)
-
-    # cria matriz solucao
-    matriz_solucao = sp.Matrix([])
-    for i in range(n):
-        matriz_solucao = matriz_solucao.row_insert(i, sp.Matrix([solucao[variaveis[i]]]))
-    
-    
-    # retorna a matriz solução
-    return matriz_solucao
 
 def print_matriz(matriz, nome, tipo = 'n'):
     linha, coluna = sp.shape(matriz)
     tamNome = len(nome)
     result_print = ""
-    
     
     for i in range(linha):
         if (i == int(linha/2) and coluna !=1) or linha == 1 or (coluna == 1 and i == 0):
@@ -112,20 +147,24 @@ def print_matriz(matriz, nome, tipo = 'n'):
         result_print += f"|"
     return result_print
 
-# Retorna eabsoluto e erelativo
-# eabsoluto = || x(k+1) - x(k) ||oo
-# erelativo = || x(k+1) - x(k) ||oo / || x(k+1) ||oo
 def return_variacao(vet_1, vet_0):
+    """ Retorna eabsoluto e erelativo
+    eabsoluto = || x(k+1) - x(k) ||oo
+    erelativo = || x(k+1) - x(k) ||oo / || x(k+1) ||oo
+    
+    """
     k1_norm_inf = vet_1.norm(sp.oo)
     sk1_k0_norm_inf = (vet_1 - vet_0).norm(sp.oo)
     return sk1_k0_norm_inf, (sk1_k0_norm_inf / k1_norm_inf).evalf()
     
-     
-
-# Ve se uma matriz B (matriz de iteraçao) converge pra solução
-# Pelo Corolario 5.1 - (Critério Geral de convergência)
-# O processo iterativo definido por é convergente se para qualquer norma de matrizes, || B || < 1       
+         
 def check_converge(matrizB):
+    """ 
+    Retorna True se a matriz B converge para a solução, False caso contrario
+    
+    Pelo Corolario 5.1 - (Critério Geral de convergência)
+    O processo iterativo definido por é convergente se para qualquer norma de matrizes, || B || < 1
+    """
     if matrizB.norm() < 1: # verifica se norma euclidiana é menor que 1
         return True
     elif matrizB.norm(1) < 1: # verifica se norma de coluna é menor que 1
@@ -136,14 +175,17 @@ def check_converge(matrizB):
         return False
     
 
-# retorno matriz B para o sistema Ax = b, para x = B x + g, onde:
-# B = I − A
-# g = b
-#
-# I: matriz identidade
-# A: matriz dos coeficientes
-# b: matriz dos termos independentes
 def return_matrizB(matrizA, n):
+    """
+    Retorna a matriz B para o sistema Ax = b, para x = B x + g, onde:
+    B = I − A
+    g = b
+    I: matriz identidade
+    A: matriz dos coeficientes
+    b: matriz dos termos independentes
+    n: numero de linhas/colunas da matriz A
+    
+    """
     
     # cria matriz quadrada n x n com zeros
     matrizB = sp.zeros(n)
@@ -156,14 +198,15 @@ def return_matrizB(matrizA, n):
     return matrizB
 
 
-# retorno vetor B para o sistema Ax = b, para x = B x + g, onde:
-# B = I − A
-# g = b
-#
-# I: matriz identidade
-# A: matriz dos coeficientes
-# b: matriz dos termos independentes
 def return_vetorG(matrizA, matrizB, n= None):
+    """ Retorna o vetor G para o sistema Ax = b, para x = B x + g, onde:
+    B = I − A
+    g = b
+    I: matriz identidade
+    A: matriz dos coeficientes
+    b: matriz dos termos independentes
+    n: numero de linhas/colunas da matriz A
+    """
     # se n for None, n = numero de linhas da matriz A
     if n is None:
         n = sp.shape(matrizA)[0]

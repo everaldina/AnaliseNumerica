@@ -1,5 +1,5 @@
 import sympy as sp
-import common
+import utils
 import os
 
 x = sp.symbols('x')
@@ -36,25 +36,25 @@ def main():
     #output = "exercicio_11.11.txt" 
     
     metodo = "simpson_3_8"
-    entrada = common.abrir_entrada(metodo, input)
+    entrada = utils.abrir_entrada(metodo, input)
     if entrada is None:
         return
     else:
         entrada = entrada.split('\n') # separando as linhas
         
-        expressao = common.expr_val(entrada[0])
+        expressao = utils.expr_val(entrada[0])
         limite_inf = sp.sympify(entrada[1]).evalf()
         limite_sup = sp.sympify(entrada[2]).evalf()
         
         
 
     # caminho do arquivo de saida
-    arquivo_saida =  os.path.join(common.diretorio_atual, 'outputs', metodo, output)
+    arquivo_saida =  os.path.join(utils.diretorio_atual, 'outputs', metodo, output)
     arquivo_saida = open(arquivo_saida, 'w')
     
     integral = simpson_3_8(expressao, limite_inf, limite_sup)
     
-    common.escrever_arquivo(arquivo_saida, "Integral por Simpson 3/8: " + str(integral))
+    utils.escrever_arquivo(arquivo_saida, "Integral por Simpson 3/8: " + str(integral))
     
     arquivo_saida.close()
     return
