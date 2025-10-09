@@ -65,7 +65,34 @@ O metodo de falsa posição escolhe como aproximação da raiz o ponto de inters
     - Geralmente converge mais rápido que o metodo da bisseção.
     - Aproximação continua da raiz
     - Avalia apenas uma vez f(x) por iteração
+
 ### Metodo de ponto fixo
+Dada equação f(x) = 0 ela é reescrita isolando x, ou seja, x = g(x). O metodo de ponto fixo consiste em escolher um valor inicial x0 e calcular a sequência xk+1 = g(xk) até que a precisão desejada seja alcançada.
+
+- Passos
+    1. Reescrever a equação f(x) = 0 na forma x = g(x)
+    2. Escolher um valor inicial x0
+    3. Calcular a sequência xk+1 = g(xk)
+    4. Repetir o passo 3 até que a precisão desejada seja alcançada
+
+- Exemplos de reescrita
+    - f(x) = x^2 - 2x + 3 = 0
+        => x^2 + 3 = 2x
+        => x = (x^2 + 3)/2
+    - f(x) = sen x = 0
+        => sen x = 0
+        => senx + x = x
+        => x = senx + x
+    - f(x) = e^x - x = 0
+        => e^x = x
+        => x = e^x
+
+- Notas
+    - A escolha de x0 e a forma de g(x) são cruciais para a convergência do metodo.
+    - Se |g'(x)| < 1 em um intervalo contendo a raiz, o metodo converge.
+    - Se |g'(x)| > 1, o metodo diverge.
+    - Convergência linear
+
 ### Metodo de Newton-Raphson
 ### Metodo da secante
 ## Relatorio 2
