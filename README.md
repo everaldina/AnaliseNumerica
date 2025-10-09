@@ -38,9 +38,33 @@ O metodo faz diversas divisões do intervalo [a,b] até que a raiz seja encontra
     7. Se f(b) e f(xk) tiverem sinais opostos, então a raiz está no intervalo [xk,b], logo a = xk
     8. Repetir os passos 2 a 7 até que a precisão desejada seja alcançada
 - Notas
-- Exemplo de entrada
+    - Melhor metodo para verificar erro de aproximação é |xk - xk-1|/|xk|
+    - Convergencia lenta: O numero de iterações pode ficar grande para alcançar a precisão desejada.
+    - Comportamento oscilatorio que pode descartar uma boa aproximação da raiz.
+    - Incondinicionalmente convergente: Sempre que f(a) e f(b) tiverem sinais opostos, o metodo sempre irá convergir para uma raiz em (a,b).
+    - Facil de implementar 
+
 
 ### Metodo de falsa posiçao
+O metodo de falsa posição escolhe como aproximação da raiz o ponto de interseção da reta que passa pelos pontos (a,f(a)) e (b,f(b)) com o eixo x. O extremo do intervalo de maior valor absoluto de f(x) permanece fixo, enquanto o outro extremo é substituído pela nova aproximação da raiz.
+
+- Passos
+    1. Definir o intervalo [a,b] tal que f(a) e f(b) tenham sinais opostos
+    2. Calcular a aproximação da raiz xk = xb + (f(b)*(a-b))/(f(b)-f(a))
+    3. Se f(xk) = 0, então xk é a raiz
+    4. Se f(xk) != 0, verificar se o valor absoluto de f(a) é menor que o valor absoluto de f(b)
+    5. Se f(a) * f(xk) < 0, então a raiz está no intervalo [a,xk], logo b = xk
+    6. Se f(b) * f(xk) < 0, então a raiz está no intervalo [xk,b], logo a = xk
+    7. Repetir os passos 2 a 6 até que a precisão desejada seja alcançada
+
+- Notas
+    - Melhor metodo para verificar erro de aproximação é |xk - xk-1|/|xk|
+    - Convergencia lenta em curvas muito acentuadas.
+    - Precisa calcular o valor absoluto da função.
+    - Facil implementação
+    - Geralmente converge mais rápido que o metodo da bisseção.
+    - Aproximação continua da raiz
+    - Avalia apenas uma vez f(x) por iteração
 ### Metodo de ponto fixo
 ### Metodo de Newton-Raphson
 ### Metodo da secante

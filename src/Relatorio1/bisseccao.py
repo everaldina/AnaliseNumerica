@@ -4,13 +4,14 @@ import os
 
 x = sp.symbols('x')
 
-def bisseccao(expressao, a, b, precisao, i_max=100, arquivo_saida=None) -> float | None:
+def bisseccao(expressao, a, b, precisao, i_max=100) -> dict | None:
+    # TODO: implementar formula para prever numero de iterações
     if utils.check_solution(expressao, a, b):
         result = {}
         k = 1
         aprox_relativa = float('inf')
-        x_old = 0
-        while k <= i_max or aprox_relativa > precisao:
+        x_old = a if abs(expressao.subs(x, a)) < abs(expressao.subs(x, b)) else b
+        while k <= i_max and aprox_relativa > precisao:
             fa = expressao.subs(x, a)
             fb = expressao.subs(x, b)
             xk = (a + b) / 2
