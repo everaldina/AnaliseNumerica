@@ -1,6 +1,16 @@
 import sympy as sp
 
 def calc_subinterval(expression: sp.Expr, x_vector: list[float], c_vector: list[float], i: int) -> sp.Expr:
+    """Calcula a expressão do spline cúbico para o subintervalo i de [x_i, x_{i+1}].
+    
+    Args:
+        expression (sp.Expr): Expressão simbólica da função original.
+        x_vector (list[float]): Lista dos pontos x onde a função é avaliada.
+        c_vector (list[float]): Lista dos coeficientes c calculados para os splines.
+        i (int): Índice do subintervalo atual.
+    Returns:
+        sp.Expr: Expressão simbólica do spline cúbico no subintervalo i.
+    """
     x = sp.symbols('x')
     h = x_vector[i+1] - x_vector[i]
     a = expression.subs(x, x_vector[i])
@@ -14,6 +24,14 @@ def calc_subinterval(expression: sp.Expr, x_vector: list[float], c_vector: list[
     return sp.simplify(spline_expression).evalf()
 
 def calc_c_values(expression: sp.Expr, x_vector: list[float], condicao: str) -> list[float]:
+    """Calcula os valores dos coeficientes c para os splines cúbicos com base na condição de contorno fornecida.
+    Args:
+        expression (sp.Expr): Expressão simbólica da função original.
+        x_vector (list[float]): Lista dos pontos x onde a função é avaliada.
+        condicao (str): Condição de contorno ('natural' ou 'fixada').
+    Returns:
+        list[float]: Lista dos coeficientes c calculados.
+    """
     n = len(x_vector)
     h_vector = [x_vector[i+1] - x_vector[i] for i in range(n-1)]
     f_vector = [expression.subs(sp.symbols('x'), x_vector[i]) for i in range(n)]
@@ -33,6 +51,15 @@ def calc_c_values(expression: sp.Expr, x_vector: list[float], condicao: str) -> 
         
         
 def condicao_contorno_fixada(expression: sp.Expr, x_vector: list[float], f_vector: list[float], h_vector: list[float]) -> tuple[sp.Matrix, sp.Matrix]:
+    """Calcula as matrizes A e B para o sistema linear dos coeficientes c com condição de contorno fixada.
+    Args:
+        expression (sp.Expr): Expressão simbólica da função original.
+        x_vector (list[float]): Lista dos pontos x onde a função é avaliada.
+        f_vector (list[float]): Lista dos valores da função nos pontos x.
+        h_vector (list[float]): Lista dos intervalos entre os pontos x.
+    Returns:
+        tuple[sp.Matrix, sp.Matrix]: Matrizes A e B do sistema linear.
+    """
     n = len(x_vector)
     A = sp.zeros(n, n)
     B = sp.zeros(n, 1)
@@ -71,6 +98,13 @@ def condicao_contorno_fixada(expression: sp.Expr, x_vector: list[float], f_vecto
     return A, B
 
 def condicao_contorno_natural(f_vector: list[float], h_vector: list[float]) -> tuple[sp.Matrix, sp.Matrix]:
+    """Calcula as matrizes A e B para o sistema linear dos coeficientes c com condição de contorno natural.
+    Args:
+        f_vector (list[float]): Lista dos valores da função nos pontos x.
+        h_vector (list[float]): Lista dos intervalos entre os pontos x.
+    Returns:
+        tuple[sp.Matrix, sp.Matrix]: Matrizes A e B do sistema linear.
+    """
     n = len(f_vector)
     A = sp.zeros(n, n)
     B = sp.zeros(n, 1)
@@ -100,6 +134,14 @@ def condicao_contorno_natural(f_vector: list[float], h_vector: list[float]) -> t
     return A, B
 
 def get_splines(expression_str: str, lista_x: list[float], condicao: str) -> list[sp.Expr]:
+    """Gera os splines cúbicos para os pontos fornecidos e a condição de contorno especificada.
+    Args:
+        expression_str (str): Expressão da função original como string.
+        lista_x (list[float]): Lista dos pontos x onde a função é avaliada.
+        condicao (str): Condição de contorno ('natural' ou 'fixada').
+    Returns:
+        list[sp.Expr]: Lista das expressões simbólicas dos splines cúbicos.
+    """
     expression = sp.sympify(expression_str)
     c_vector = calc_c_values(expression, lista_x, condicao)
     n = len(lista_x)
